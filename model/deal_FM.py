@@ -11,18 +11,21 @@ from dtaidistance import dtw
 from sklearn.decomposition import PCA
 from model.CNNmodel import CNNmodel
 
-def get_FM(xjtuallh,target,sfm):
+def get_FM(xjh,target,sfm):
+    xjtuallh=read_fea_XJTU(xjh)
     DM = torch.Tensor(get_DM(xjtuallh,target))
     fm=[]
     for i in range(len(sfm)):
+    # for i in range(4):
         fm.append(sfm[i]/DM[0][i])
+        # fm.append(sfm/DM[0][i])
     fw=[]
     for i in range(len(fm)):
         dfm=fm[i]/sum(fm)
         fw.append(dfm.detach().numpy())
         print(fw[i])
-    sio.savemat('./random_10/DFMvalue261_r10.mat',{'fw10':fw})
-    sio.savemat('./random_10/softmax261_r10.mat',{'sfm10':sfm.detach().numpy()})
+    sio.savemat('./tradeoff/beta1/DFMvalue162.mat',{'fw2':fw})
+    # sio.savemat('softmax261.mat',{'sfm1':sfm.detach().numpy()})
     return fw
 
 def get_DM(xjtuallh,target):
@@ -36,7 +39,7 @@ def get_DM(xjtuallh,target):
         for j in range(len(MICY)):
             MIC_value[i,j]=abs(MICX[i]-MICY[j])*xdtw[i,j]/(MICX[i]*MICY[j])
             # print(MIC_value[i,j])
-    sio.savemat('./random_10/MICvalue261_r10.mat',{'MIC_value10':MIC_value})
+    # sio.savemat('MICvalue261.mat',{'MIC_value':MIC_value})
     return MIC_value
 
 def GetMICY(data):
@@ -94,7 +97,7 @@ def get_MIC(pcao,pcai,pcac,pcam,pcat):
         y = RMS_Y[Num].reshape(len(RMS_Y[Num]),)
         mine.compute_score(x,y)
         xmic.append(mine.mic())
-    sio.savemat("./random_10/MIC_data162_r10.mat",{'PHM_MIC':xmic})
+    # sio.savemat("MIC_data162.mat",{'PHM_MIC':xmic})
     return xmic
 
 def get_DTW(pcao,pcai,pcac,pcam,pcat):
@@ -106,6 +109,27 @@ def get_DTW(pcao,pcai,pcac,pcam,pcat):
             a = np.double(X_ALL[i])
             b = np.double(Y_ALL[j])
             DTW[i,j]=dtw.distance(a, b)
-    sio.savemat('./random_10/dtw_data162_r10.mat',{'dtw':DTW})
+    # sio.savemat('dtw_data162.mat',{'dtw':DTW})
     return DTW
     
+def read_fea_XJTU(xjh):
+    hx11=xjh['xo'][0]
+    hx12=xjh['xo'][1]
+    hx13=xjh['xo'][2]
+    hx14=xjh['xc'][0]
+    hx15=xjh['xm'][0]
+    
+    hx21=xjh['xi'][0]
+    hx22=xjh['xo'][3]
+    hx23=xjh['xc'][1]
+    hx24=xjh['xo'][4]
+    hx25=xjh['xo'][5]
+    
+    hx31=xjh['xo'][6]
+    hx32=xjh['xm'][1]
+    hx33=xjh['xi'][1]
+    hx34=xjh['xi'][2]
+    hx35=xjh['xo'][7]
+    
+    xjtuallh=[hx11,hx12,hx13,hx14,hx15,hx21,hx22,hx23,hx24,hx25,hx31,hx32,hx33,hx34,hx35]
+    return xjtuallh

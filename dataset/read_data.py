@@ -23,31 +23,6 @@ def read_data_XJTU(path,time_steps):
     X33 = sio.loadmat(path+'BJP_XJTUB3_3.mat')['BJP'][4117-time_steps:4452,:].astype(np.float32)
     X34 = sio.loadmat(path+'BJP_XJTUB3_4.mat')['BJP'][17546-time_steps:,:].astype(np.float32)
     X35 = sio.loadmat(path+'BJP_XJTUB3_5.mat')['BJP'][285-time_steps:1368,:].astype(np.float32)
-    
-    # XN11 = sio.loadmat(path+'XJB1_1.mat')['XB1_1'][:400,:].astype(np.float32)
-    # XN23 = sio.loadmat(path+'XJB2_3.mat')['XB2_3'][:400,:].astype(np.float32)
-    # XN33 = sio.loadmat(path+'XJB3_3.mat')['XB3_3'][:400,:].astype(np.float32)
-    # XN32 = sio.loadmat(path+'XJB3_2.mat')['XB3_2'][:400,:].astype(np.float32)
-    
-    # X11 = sio.loadmat(path+'XJB1_1.mat')['XB1_1'][1017-time_steps:1476,:].astype(np.float32)
-    # X12 = sio.loadmat(path+'XJB1_2.mat')['XB1_2'][796-time_steps:1932,:].astype(np.float32)
-    # X13 = sio.loadmat(path+'XJB1_3.mat')['XB1_3'][1896-200-time_steps:1896,:].astype(np.float32)
-    # X14 = sio.loadmat(path+'XJB1_4.mat')['XB1_4'][1464-200-time_steps:1464,:].astype(np.float32)
-    # X15 = sio.loadmat(path+'XJB1_5.mat')['XB1_5'][624-200-time_steps:624,:].astype(np.float32)
-    
-    # X21 = sio.loadmat(path+'XJB2_1.mat')['XB2_1'][5892-200-time_steps:5892,:].astype(np.float32)
-    # X22 = sio.loadmat(path+'XJB2_2.mat')['XB2_2'][1024-time_steps:1932,:].astype(np.float32)
-    # X23 = sio.loadmat(path+'XJB2_3.mat')['XB2_3'][4289-time_steps:6396,:].astype(np.float32)
-    # X24 = sio.loadmat(path+'XJB2_4.mat')['XB2_4'][504-200-time_steps:504,:].astype(np.float32)
-    # X25 = sio.loadmat(path+'XJB2_5.mat')['XB2_5'][2428-time_steps:4068,:].astype(np.float32)
-    
-    # X31 = sio.loadmat(path+'XJB3_1.mat')['XB3_1'][4101-time_steps:,:].astype(np.float32)
-    # X32 = sio.loadmat(path+'XJB3_2.mat')['XB3_2'][1671-time_steps:,:].astype(np.float32)
-    # X33 = sio.loadmat(path+'XJB3_3.mat')['XB3_3'][4117-time_steps:4452,:].astype(np.float32)
-    # X34 = sio.loadmat(path+'XJB3_4.mat')['XB3_4'][4366-time_steps:,:].astype(np.float32)
-    # X35 = sio.loadmat(path+'XJB3_5.mat')['XB3_5'][285-time_steps:1368,:].astype(np.float32)
-    
-    # XN=[XN11,XN23,XN33,XN32]
     XO=[X11,X12,X13,X22,X24,X25,X31,X35]
     XI=[X21,X33,X34]
     XC=[X14,X23]
@@ -56,8 +31,11 @@ def read_data_XJTU(path,time_steps):
 
 def read_data_PHM(path,time_steps):
     X11=sio.loadmat(path+'H1_1.mat')['BJP'][2739-time_steps:2790].astype(np.float32)
+    Xa11=sio.loadmat(path+'H1_1.mat')['BJP'].astype(np.float32)
     X12=sio.loadmat(path+'H1_2.mat')['BJP'][820-time_steps:871].astype(np.float32)
+    Xa12=sio.loadmat(path+'H1_2.mat')['BJP'].astype(np.float32)
     X13=sio.loadmat(path+'H1_3.mat')['BJP'][2301-time_steps:2348].astype(np.float32)
+    Xa13=sio.loadmat(path+'H1_3.mat')['BJP'].astype(np.float32)
     X14=sio.loadmat(path+'H1_4.mat')['BJP'][1082-time_steps:1170].astype(np.float32)
     X15=sio.loadmat(path+'H1_5.mat')['BJP'][2429-time_steps:2463].astype(np.float32)
     X16=sio.loadmat(path+'H1_6.mat')['BJP'][2410-time_steps:2448].astype(np.float32)
@@ -74,8 +52,8 @@ def read_data_PHM(path,time_steps):
     Xa26=sio.loadmat(path+'H2_6.mat')['BJP'].astype(np.float32)
     X27=sio.loadmat(path+'H2_7.mat')['BJP'][220-time_steps:229].astype(np.float32)
     
-    xneed1=[Xa22,Xa26,Xa21]
-    xneed2=[X22,X26,X21]
+    xneed1=[Xa21,Xa26,Xa22]
+    xneed2=[X21,X26,X22]
     return xneed1,xneed2
     
 def read_fea_XJTU(path):
@@ -108,9 +86,9 @@ def get_value(xx):
     return regress_labels
 
 def get_needtarget(target,time_steps):
-    tg21=target[2][870-time_steps:911,:]
-    tg22=target[0][742-time_steps:797,:]
+    tg21=target[0][870-time_steps:911,:]
+    tg22=target[2][742-time_steps:797,:]
     tg26=target[1][683-time_steps:701]
     
-    xx=[torch.Tensor(tg22),torch.Tensor(tg26),torch.Tensor(tg21)]
+    xx=[torch.Tensor(tg21),torch.Tensor(tg26),torch.Tensor(tg22)]
     return xx

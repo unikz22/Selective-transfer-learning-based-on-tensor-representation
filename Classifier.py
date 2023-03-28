@@ -16,7 +16,7 @@ from model.deal_fea import transdatax
 device='cpu'
 
 #%%数据加载
-path = 'F:/zw_work/work1/dataset/XJTU_HHT/'
+path = './dataset/XJTU_HHT/'
 #参数设置
 time_steps = 8
 
