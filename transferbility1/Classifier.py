@@ -28,13 +28,17 @@ indexs={'xo':0,'xi':1,'xc':2,'xm':3}
 
 print('start read data')
 xo,xi,xc,xm=read_data_XJTU(path,time_steps) #XO外圈故障   XI内圈故障   XC支架故障  XM混合故障
-
+_,xtg=read_data_UNSW(patht,time_steps)
+xt=xtg[:1]
+targetdata=UNSW_split(xt,block_size=80)
 dataset=MyDataset(xo,xi,xc,xm,block_size=80,samples=50)
 all_data=dataset.all_data
 print('start train')
 #%%模型训练
 ploss=[]
 
+def mmd(x,y):
+     return torch.sum(torch.pow((torch.mean(x,dim = 0) - torch.mean(y,dim = 0)),2))
 
 for epoch in range(30):
     print("epoch:",epoch)
@@ -59,10 +63,13 @@ for epoch in range(30):
             for i in range(len(datas)):
                 xx=transdatax(datas[i])
                 hhx, outc, trehh = MyConvent(xx)
+                hhxt,_,_ = MyConvent(xxt)
+                adp_mmd = mmd(hhx,hhxt)
                 gz[indexs[key]].append(hhx)
                 gztre[indexs[key]].append(trehh)
                 cnn_loss = loss_func(outc, torch.Tensor(class_labels[i][:,0]).long())
                 cnnloss=cnnloss+cnn_loss
+                mmdloss=mmdloss+adp_mmd
                 
         closs=torch.zeros(1).to(device)#类间损失
         ljhhx=[torch.cat(gz[0][:2],axis=0),torch.cat(gz[1][:2],axis=0),torch.cat(gz[2][:2],axis=0),torch.cat(gz[3][:2],axis=0)]
