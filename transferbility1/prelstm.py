@@ -84,7 +84,7 @@ for beta in beta1int2:
     for epoch in range(3):
         print("epoch:",epoch)
         ploss=[]
-        for inepoch in range(400):
+        for inepoch in range(150):
             print("inepoch:",inepoch)
             optimizer.zero_grad()
             data = dataset[0]
@@ -151,7 +151,7 @@ for beta in beta1int2:
                             Us_list[key][i] = Us2
                     LSTMmiddle[key]=temp
                     tuckerenc[key]=tuck_enc
-            if inepoch<=150:
+            if inepoch<=50:
                 with torch.no_grad():
                     sfm=[0.7811,0.0411,0.1102,0.0677]
                     #sfm=[0.7908,0.0393,0.1045,0.0654]
