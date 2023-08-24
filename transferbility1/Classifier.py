@@ -88,7 +88,7 @@ for epoch in range(30):
 
         
         print(f'epoch {epoch} cnnloss {cnnloss} closs {closs} lossln {lossln}')
-        loss=cnnloss+closs+lossln      
+        loss=cnnloss+closs+lossln+0.1*mmdloss         
         ploss.append(loss.detach().numpy())
         loss.backward()
         optimizer.step()
