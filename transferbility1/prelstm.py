@@ -153,9 +153,8 @@ for beta in beta1int2:
                     tuckerenc[key]=tuck_enc
             if inep0 and inepoch<=15:
                 with torch.no_grad():
-                    softmax=nn.Softmax(dim=1)
-                    sfm=[torch.mean(softmax(precnn(transdatax(i))[1]),0) for i in phmx]
-                    sfm=sum(sfm)/len(sfm)
+                    sfm=[0.7811,0.0411,0.1102,0.0677]
+                    #sfm=[0.7908,0.0393,0.1045,0.0654]
                     FM=get_FM(tuckerenc,targetcores,sfm)
                     targetLSTM = get_vseq(FM,preoutterLSTM.state_dict(),preinnerLSTM.state_dict(),precageLSTM.state_dict(),premixedLSTM.state_dict(),targetLSTM)
                     phmallh=targetcores
